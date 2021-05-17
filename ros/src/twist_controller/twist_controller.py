@@ -1,6 +1,8 @@
 
-from ros.src.twist_controller.yaw_controller import YawController
-
+from yaw_controller import YawController
+from pid import PID
+from lowpass import LowPassFilter
+import rospy
 
 GAS_DENSITY = 2.858
 ONE_MPH = 0.44704
@@ -51,7 +53,7 @@ class Controller(object):
         if linear_vel == 0 and current_vel < 0.1:
             throttle = 0
             brake = 400
-        elif thrittle < .1 and vel_error < 0:
+        elif throttle < .1 and vel_error < 0:
             throttle = 0
             decel = max(vel_error, self.decel_limit)
             brake = abs(decel)*self.vehicle_mass*self.wheel_radius
